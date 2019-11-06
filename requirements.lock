@@ -10,6 +10,7 @@ py==1.8.0
 pyenchant==2.0.0
 pyparsing==2.4.4
 pytest==5.2.2
+pyxdg==0.26
 setuptools==41.6.0
 six==1.13.0
 wcwidth==0.1.7
