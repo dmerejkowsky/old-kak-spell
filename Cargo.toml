@@ -1,0 +1,9 @@
+[package]
+authors = ["Dimitri Merejkowsky <d.merej@gmail.com>"]
+edition = "2018"
+name = "kak-spell"
+version = "0.1.0"
+
+[dependencies]
+enchant = "0.2.0"
+gumdrop = "0.7.0"
