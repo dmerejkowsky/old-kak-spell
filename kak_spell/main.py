@@ -19,19 +19,16 @@ def get_pwl_path(lang):
 
 def add_word(word, *, lang):
     pwl_path = get_pwl_path(lang)
-    lines = pwl_path.lines(retain=False)
-    if word not in lines:
-        lines.append(word)
-    pwl_path.write_lines(lines)
+    words = set(pwl_path.lines(retain=False))
+    words.add(word)
+    pwl_path.write_lines(sorted(words))
 
 
 def remove_word(word, *, lang):
     pwl_path = get_pwl_path(lang)
-    lines = pwl_path.lines(retain=False)
-    if word not in lines:
-        return
-    lines.remove(word)
-    pwl_path.write_lines(lines)
+    words = set(pwl_path.lines(retain=False))
+    words.discard(word)
+    pwl_path.write_lines(sorted(words))
 
 
 def check(path, *, lang):
