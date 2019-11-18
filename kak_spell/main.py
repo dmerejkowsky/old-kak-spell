@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from typing import List
 import argparse
 import sys
 
@@ -8,7 +9,7 @@ from path import Path
 import xdg.BaseDirectory
 
 
-def get_pwl_path(lang):
+def get_pwl_path(lang: str) -> Path:
     data_path = Path(xdg.BaseDirectory.save_data_path("kak-spell"))
     data_path.makedirs_p()
     pwl_path = data_path / f"{lang}.pwl"
@@ -17,21 +18,21 @@ def get_pwl_path(lang):
     return pwl_path
 
 
-def add_word(word, *, lang):
+def add_word(word: str, *, lang: str) -> None:
     pwl_path = get_pwl_path(lang)
     words = set(pwl_path.lines(retain=False))
     words.add(word)
     pwl_path.write_lines(sorted(words))
 
 
-def remove_word(word, *, lang):
+def remove_word(word: str, *, lang: str) -> None:
     pwl_path = get_pwl_path(lang)
     words = set(pwl_path.lines(retain=False))
     words.discard(word)
     pwl_path.write_lines(sorted(words))
 
 
-def check(path, *, lang):
+def check(path: Path, *, lang: str) -> None:
     pwl_path = get_pwl_path(lang)
     dict_with_pwl = enchant.DictWithPWL(lang, str(pwl_path))
     checker = enchant.checker.SpellChecker(lang)
@@ -43,7 +44,7 @@ def check(path, *, lang):
                 print(f"{path}:{lineno}:{error.wordpos+1}: error: {error.word}")
 
 
-def kak_menu_from_suggestions(suggestions):
+def kak_menu_from_suggestions(suggestions: List[str]) -> str:
     menu = ""
     for entry in suggestions:
         # Note: %{...} is kakoune way of grouping stuff that may - or not
@@ -55,7 +56,7 @@ def kak_menu_from_suggestions(suggestions):
     return "menu " + menu
 
 
-def replace(word, *, lang, kak_output):
+def replace(word: str, *, lang: str, kak_output: bool) -> None:
     pwl_path = get_pwl_path(lang)
     dict_with_pwl = enchant.DictWithPWL(lang, str(pwl_path))
     suggestions = dict_with_pwl.suggest(word)
@@ -66,7 +67,7 @@ def replace(word, *, lang, kak_output):
         print(" ".join(suggestions))
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--lang", default="en_US")
 
