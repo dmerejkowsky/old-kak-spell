@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from typing import List
+from typing import List, Optional
 import argparse
 import sys
 
@@ -23,6 +23,7 @@ def add_word(word: str, *, lang: str) -> None:
     words = set(pwl_path.lines(retain=False))
     words.add(word)
     pwl_path.write_lines(sorted(words))
+    print("Word added to", pwl_path)
 
 
 def remove_word(word: str, *, lang: str) -> None:
@@ -32,16 +33,19 @@ def remove_word(word: str, *, lang: str) -> None:
     pwl_path.write_lines(sorted(words))
 
 
-def check(path: Path, *, lang: str) -> None:
+def check(path: Path, *, lang: str) -> bool:
     pwl_path = get_pwl_path(lang)
     dict_with_pwl = enchant.DictWithPWL(lang, str(pwl_path))
     checker = enchant.checker.SpellChecker(lang)
     checker.dict = dict_with_pwl
+    ok  = True
     with open(path, "r") as f:
         for lineno, line in enumerate(f, start=1):
             checker.set_text(line)
             for error in checker:
+                ok = False
                 print(f"{path}:{lineno}:{error.wordpos+1}: error: {error.word}")
+    return ok
 
 
 def kak_menu_from_suggestions(suggestions: List[str]) -> str:
@@ -67,7 +71,7 @@ def replace(word: str, *, lang: str, kak_output: bool) -> None:
         print(" ".join(suggestions))
 
 
-def main() -> None:
+def main(argv: Optional[List[str]] = None) -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--lang", default="en_US")
 
@@ -88,7 +92,7 @@ def main() -> None:
     )
     replace_parser.add_argument("word")
 
-    args = parser.parse_args()
+    args = parser.parse_args(args=argv)
     lang = args.lang
 
     if args.command == "add":
@@ -99,7 +103,9 @@ def main() -> None:
         remove_word(word, lang=lang)
     elif args.command == "check":
         path = args.path
-        check(path, lang=lang)
+        ok = check(path, lang=lang)
+        if not ok:
+            sys.exit(1)
     elif args.command == "replace":
         word = args.word
         kakoune = args.kakoune
