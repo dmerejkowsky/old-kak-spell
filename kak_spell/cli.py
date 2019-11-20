@@ -3,54 +3,36 @@ from typing import List, Optional
 import argparse
 import sys
 
-import enchant
-import enchant.checker
 from path import Path
-import xdg.BaseDirectory
 
-
-def get_pwl_path(lang: str) -> Path:
-    data_path = Path(xdg.BaseDirectory.save_data_path("kak-spell"))
-    data_path.makedirs_p()
-    pwl_path = data_path / f"{lang}.pwl"
-    if not pwl_path.exists():
-        pwl_path.write_text("")
-    return pwl_path
+from .checker import Checker
 
 
 def add_word(word: str, *, lang: str) -> None:
-    pwl_path = get_pwl_path(lang)
-    words = set(pwl_path.lines(retain=False))
-    words.add(word)
-    pwl_path.write_lines(sorted(words))
-    print("Word added to", pwl_path)
+    checker = Checker(lang=lang)
+    checker.add(word)
+    print("Word added to", checker.pwl_path)
 
 
 def remove_word(word: str, *, lang: str) -> None:
-    pwl_path = get_pwl_path(lang)
-    words = set(pwl_path.lines(retain=False))
-    words.discard(word)
-    pwl_path.write_lines(sorted(words))
+    checker = Checker(lang=lang)
+    checker.remove(word)
+    print("Word removed from", checker.pwl_path)
 
 
 def check(path: Path, *, lang: str) -> bool:
-    pwl_path = get_pwl_path(lang)
-    dict_with_pwl = enchant.DictWithPWL(lang, str(pwl_path))
-    checker = enchant.checker.SpellChecker(lang)
-    checker.dict = dict_with_pwl
-    ok  = True
-    with open(path, "r") as f:
-        for lineno, line in enumerate(f, start=1):
-            checker.set_text(line)
-            for error in checker:
-                ok = False
-                print(f"{path}:{lineno}:{error.wordpos+1}: error: {error.word}")
+    checker = Checker(lang=lang)
+    errors = checker.check(path)
+    ok = True
+    for error in errors:
+        ok = False
+        print(f"{path}:{error.line}:{error.offset}: error: {error.word}")
     return ok
 
 
-def kak_menu_from_suggestions(suggestions: List[str]) -> str:
+def kak_menu_from_replacements(replacements: List[str]) -> str:
     menu = ""
-    for entry in suggestions:
+    for entry in replacements:
         # Note: %{...} is kakoune way of grouping stuff that may - or not
         # contains quotes, which prevents us from using `%`, `.format()` or
         # f-strings :P
@@ -61,14 +43,13 @@ def kak_menu_from_suggestions(suggestions: List[str]) -> str:
 
 
 def replace(word: str, *, lang: str, kak_output: bool) -> None:
-    pwl_path = get_pwl_path(lang)
-    dict_with_pwl = enchant.DictWithPWL(lang, str(pwl_path))
-    suggestions = dict_with_pwl.suggest(word)
+    checker = Checker(lang=lang)
+    replacements = checker.replace(word)
     if kak_output:
-        menu = kak_menu_from_suggestions(suggestions)
+        menu = kak_menu_from_replacements(replacements)
         print(menu)
     else:
-        print(" ".join(suggestions))
+        print(" ".join(replacements))
 
 
 def main(argv: Optional[List[str]] = None) -> None:
