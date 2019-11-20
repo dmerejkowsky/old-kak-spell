@@ -20,9 +20,9 @@ def remove_word(word: str, *, lang: str) -> None:
     print("Word removed from", checker.pwl_path)
 
 
-def check(path: Path, *, lang: str) -> bool:
+def check(path: Path, *, lang: str, filetype: Optional[str] = None) -> bool:
     checker = Checker(lang=lang)
-    errors = checker.check(path)
+    errors = checker.check(path, filetype=filetype)
     ok = True
     for error in errors:
         ok = False
@@ -59,7 +59,10 @@ def main(argv: Optional[List[str]] = None) -> None:
     subparsers = parser.add_subparsers(title="commands", dest="command")
 
     check_parser = subparsers.add_parser("check")
-    check_parser.add_argument("path")
+    check_parser.add_argument("path", type=Path)
+    check_parser.add_argument(
+        "--filetype", help="file type, as set by kakoune in $kak_opt_filetype"
+    )
 
     add_parser = subparsers.add_parser("add")
     add_parser.add_argument("word")
@@ -84,7 +87,7 @@ def main(argv: Optional[List[str]] = None) -> None:
         remove_word(word, lang=lang)
     elif args.command == "check":
         path = args.path
-        ok = check(path, lang=lang)
+        ok = check(path, lang=lang, filetype=args.filetype)
         if not ok:
             sys.exit(1)
     elif args.command == "replace":

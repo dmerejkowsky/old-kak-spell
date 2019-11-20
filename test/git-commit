@@ -1,0 +1,19 @@
+This is the title of the commit
+
+This is the body
+# Tere are comments
+# on
+# several
+# lines
+# But this missstake is ignored
+
+# ------------------------ >8 ------------------------
+# Do not modify or remove the line above.
+# Everything below it will be ignored.
+diff --git a/foo b/foo
+
+@@ -3,54 +3,36 @@ some context
+Those lines are below the scissors and thus also ignored:
+
+-missstake = 42
++missstake= 43

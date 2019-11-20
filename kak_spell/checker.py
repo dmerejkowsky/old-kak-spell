@@ -1,9 +1,33 @@
-from typing import Iterator, List
+from typing import Callable, Dict, Iterator, List, Optional, Tuple
 import attr
 import enchant
 import enchant.checker
 from path import Path
 import xdg.BaseDirectory
+
+NumberedLine = Tuple[int, str]
+LinesGetter = Callable[[Path], Iterator[NumberedLine]]
+
+SCISSORS = "# ------------------------ >8 ------------------------\n"
+
+
+def get_lines_git_commit(path: Path) -> Iterator[NumberedLine]:
+    with path.open() as f:
+        for lineno, line in enumerate(f, start=1):
+            if line == SCISSORS:
+                break
+            if line.startswith("#"):
+                continue
+            yield lineno, line
+
+
+def get_lines_unknown_type(path: Path) -> Iterator[NumberedLine]:
+    with path.open() as f:
+        for lineno, line in enumerate(f, start=1):
+            yield lineno, line
+
+
+KNOWN_FILETYPES: Dict[str, LinesGetter] = {"git-commit": get_lines_git_commit}
 
 
 @attr.s
@@ -23,6 +47,15 @@ def get_pwl_path(lang: str) -> Path:
     return pwl_path
 
 
+def get_lines(path: Path, filetype: Optional[str] = None) -> Iterator[NumberedLine]:
+    default_func = get_lines_unknown_type
+    if filetype:
+        func = KNOWN_FILETYPES.get(filetype, default_func)
+    else:
+        func = default_func
+    yield from func(path)
+
+
 class Checker:
     def __init__(self, *, lang: str):
         self.pwl_path = get_pwl_path(lang)
@@ -30,12 +63,11 @@ class Checker:
         self._checker = enchant.checker.SpellChecker(lang)
         self._checker.dict = dict_with_pwl
 
-    def check(self, path: Path) -> Iterator[Error]:
-        with open(path, "r") as f:
-            for lineno, line in enumerate(f, start=1):
-                self._checker.set_text(line)
-                for error in self._checker:
-                    yield Error(path, lineno, error.wordpos + 1, error.word)
+    def check(self, path: Path, filetype: Optional[str] = None) -> Iterator[Error]:
+        for lineno, line in get_lines(path, filetype=filetype):
+            self._checker.set_text(line)
+            for error in self._checker:
+                yield Error(path, lineno, error.wordpos + 1, error.word)
 
     def add(self, word: str) -> None:
         words = set(self.pwl_path.lines(retain=False))

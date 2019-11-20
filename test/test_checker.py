@@ -43,3 +43,10 @@ def test_can_replace(mocked_xdg: Any) -> None:
     replacements = checker.replace("missstake")
     print(replacements)
     assert "mistake" in replacements
+
+
+def test_can_spell_check_commit_messages() -> None:
+    checker = Checker(lang="en_US")
+    commit_msg_path = Path("test") / "git-commit"
+    errors = list(checker.check(commit_msg_path, filetype="git-commit"))
+    assert not errors
