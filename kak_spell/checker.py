@@ -2,7 +2,9 @@ from typing import Callable, Dict, Iterator, List, Optional, Tuple
 import attr
 import enchant
 import enchant.checker
+from enchant.tokenize import Filter
 from path import Path
+import re
 import xdg.BaseDirectory
 
 NumberedLine = Tuple[int, str]
@@ -56,11 +58,26 @@ def get_lines(path: Path, filetype: Optional[str] = None) -> Iterator[NumberedLi
     yield from func(path)
 
 
+class UrlFilter(Filter):  # type: ignore
+    r"""Filter skipping over urls
+    """
+    _pattern = re.compile(r"(\w+)://\S+")
+
+    def _skip(self, word: str) -> bool:
+        if self._pattern.match(word):
+            return True
+        return False
+
+
+def get_filters() -> List[Filter]:
+    return [UrlFilter]
+
+
 class Checker:
     def __init__(self, *, lang: str):
         self.pwl_path = get_pwl_path(lang)
         dict_with_pwl = enchant.DictWithPWL(lang, str(self.pwl_path))
-        self._checker = enchant.checker.SpellChecker(lang)
+        self._checker = enchant.checker.SpellChecker(lang, filters=get_filters())
         self._checker.dict = dict_with_pwl
 
     def check(self, path: Path, filetype: Optional[str] = None) -> Iterator[Error]:

@@ -25,6 +25,16 @@ def test_can_add_word_to_pwl(mocked_xdg: Any, tmp_path: Path) -> None:
     assert len(lines) == 1
 
 
+def test_ignore_urls(tmp_path: Path, mocked_xdg: Any) -> None:
+    checker = Checker(lang="en_US")
+    readme_path = tmp_path / "readme.txt"
+    readme_path.write_text(
+        "The following word, https://thisdoesnotcount.com, is an URL and does not count"
+    )
+    errors = list(checker.check(readme_path))
+    assert not errors
+
+
 def test_can_remove_word_from_pwl(mocked_xdg: Any, tmp_path: Path) -> None:
     checker = Checker(lang="en_US")
     checker.add("CMake")
