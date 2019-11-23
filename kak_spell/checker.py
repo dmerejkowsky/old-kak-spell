@@ -73,6 +73,13 @@ def get_filters() -> List[Filter]:
     return [UrlFilter]
 
 
+def is_inside_backticks(text, error):
+    pos = error.wordpos
+    start = pos -1
+    end = pos + len(error.word)
+    return text[start] == "`" and text[end] == "`"
+
+
 class Checker:
     def __init__(self, *, lang: str):
         self.pwl_path = get_pwl_path(lang)
@@ -84,6 +91,8 @@ class Checker:
         for lineno, line in get_lines(path, filetype=filetype):
             self._checker.set_text(line)
             for error in self._checker:
+                if filetype == "markdown" and is_inside_backticks(line, error):
+                    continue
                 yield Error(path, lineno, error.wordpos + 1, error.word)
 
     def add(self, word: str) -> None:

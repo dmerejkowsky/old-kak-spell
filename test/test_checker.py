@@ -25,6 +25,14 @@ def test_can_add_word_to_pwl(mocked_xdg: Any, tmp_path: Path) -> None:
     assert len(lines) == 1
 
 
+def test_ignore_backticks(tmp_path: Path, mocked_xdg: Any) -> None:
+    checker = Checker(lang="en_US")
+    readme_path = tmp_path / "readme.txt"
+    readme_path.write_text("The following token: `MyVar` is not a word")
+    errors = list(checker.check(readme_path, filetype="markdown"))
+    assert not errors
+
+
 def test_ignore_urls(tmp_path: Path, mocked_xdg: Any) -> None:
     checker = Checker(lang="en_US")
     readme_path = tmp_path / "readme.txt"
