@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "kak-spell"
+version = "0.1.0"
+description = "PyEnchant wrapper for Kakoune"
+authors = ["Dimitri Merejkowsky <d.merej@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+attrs = "^19.3.0"
+path = "^13.1.0"
+pyxdg = "^0.26"
+pyenchant = "3.0.0a2"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.7.9"
+pytest = "^5.3.5"
+pytest-mock = "^2.0.0"
+mypy = "^0.761"
+
+[tool.poetry.scripts]
+kak-spell = "kak_spell.cli:main"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
