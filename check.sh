@@ -2,6 +2,6 @@
 set -x
 set -e
 
-flake8 kak_spell
-mypy kak_spell test/
-pytest
+poetry run flake8 kak_spell
+poetry run mypy kak_spell test/
+poetry run pytest

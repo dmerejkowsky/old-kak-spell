@@ -1,4 +1,4 @@
-from typing import Callable, Dict, Iterator, List, Optional, Tuple
+from typing import Any, Callable, Dict, Iterator, List, Optional, Tuple
 import attr
 import enchant
 import enchant.checker
@@ -73,9 +73,9 @@ def get_filters() -> List[Filter]:
     return [UrlFilter]
 
 
-def is_inside_backticks(text, error):
+def is_inside_backticks(text: str, error: Any) -> bool:
     pos = error.wordpos
-    start = pos -1
+    start = pos - 1
     end = pos + len(error.word)
     return text[start] == "`" and text[end] == "`"
 
