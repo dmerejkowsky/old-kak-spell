@@ -175,7 +175,7 @@ description = "Python bindings for the Enchant spellchecking system"
 name = "pyenchant"
 optional = false
 python-versions = ">=3.5"
-version = "3.0.0a2"
+version = "3.0.0rc3"
 
 [[package]]
 category = "dev"
@@ -280,14 +280,14 @@ marker = "python_version < \"3.8\""
 name = "zipp"
 optional = false
 python-versions = ">=3.6"
-version = "2.1.0"
+version = "2.2.0"
 
 [package.extras]
 docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools"]
 
 [metadata]
-content-hash = "7404a4da0adab3dc781e6049d44a43ab7216bac55671e2c5bf3f7553d16f2b8b"
+content-hash = "38007b068fdac22026d6d25dfb9904a9d014762c996ca281aac6bc3103f3674c"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -364,8 +364,10 @@ pycodestyle = [
     {file = "pycodestyle-2.5.0.tar.gz", hash = "sha256:e40a936c9a450ad81df37f549d676d127b1b66000a6c500caa2b085bc0ca976c"},
 ]
 pyenchant = [
-    {file = "pyenchant-3.0.0a2-py3-none-any.whl", hash = "sha256:332bcb4e83a3e5fb0a007537f15d9d81ed106c2edef1596bb7a96fa627ec39c9"},
-    {file = "pyenchant-3.0.0a2.tar.gz", hash = "sha256:68520affefb77e41931e5135c59f39fad783456ff36dc7bafbb66a0d088d90bd"},
+    {file = "pyenchant-3.0.0rc3-py3-none-any.whl", hash = "sha256:b45ce9f9ffc2e039b77b551eb7a0cb1e131041ab62445197ffbf3460f04121ac"},
+    {file = "pyenchant-3.0.0rc3-py3-none-win32.whl", hash = "sha256:0207d1e34e33b984c9b62ddfb9bf21dc11bcac4838d523c50fce538fb37ed41e"},
+    {file = "pyenchant-3.0.0rc3-py3-none-win_amd64.whl", hash = "sha256:7970c0b2d2466d41ffb3ec4d4a664f1ecfd1a0819fe37b4e766c3a7e117c6371"},
+    {file = "pyenchant-3.0.0rc3.tar.gz", hash = "sha256:eedacebef285e759c9852be55e3b1f3a790df03e801e7a7803098cce6a417fb7"},
 ]
 pyflakes = [
     {file = "pyflakes-2.1.1-py2.py3-none-any.whl", hash = "sha256:17dbeb2e3f4d772725c777fabc446d5634d1038f234e77343108ce445ea69ce0"},
@@ -424,6 +426,6 @@ wcwidth = [
     {file = "wcwidth-0.1.8.tar.gz", hash = "sha256:f28b3e8a6483e5d49e7f8949ac1a78314e740333ae305b4ba5defd3e74fb37a8"},
 ]
 zipp = [
-    {file = "zipp-2.1.0-py3-none-any.whl", hash = "sha256:ccc94ed0909b58ffe34430ea5451f07bc0c76467d7081619a454bf5c98b89e28"},
-    {file = "zipp-2.1.0.tar.gz", hash = "sha256:feae2f18633c32fc71f2de629bfb3bd3c9325cd4419642b1f1da42ee488d9b98"},
+    {file = "zipp-2.2.0-py36-none-any.whl", hash = "sha256:d65287feb793213ffe11c0f31b81602be31448f38aeb8ffc2eb286c4f6f6657e"},
+    {file = "zipp-2.2.0.tar.gz", hash = "sha256:5c56e330306215cd3553342cfafc73dda2c60792384117893f3a83f8a1209f50"},
 ]
