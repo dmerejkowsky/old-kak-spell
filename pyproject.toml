@@ -7,7 +7,7 @@ readme = "README.md"
 homepage = "https://github.com/dmerejkowsky/kak-spell"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.6"
 
 attrs = "^19.3.0"
 path = "^13.1.0"
