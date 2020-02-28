@@ -17,7 +17,10 @@ pipx install kak-spell
 
 ```kak
 plug "dmerejkowsky/kak-spell"
+
+define-command lint-on-save "hook buffer BufWritePre .* lint"```
 ```
+
 
 4. (optional): declare a user mode and some mappings:
 
