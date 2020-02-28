@@ -3,6 +3,8 @@ name = "kak-spell"
 version = "0.1.0"
 description = "PyEnchant wrapper for Kakoune"
 authors = ["Dimitri Merejkowsky <d.merej@gmail.com>"]
+readme = "README.md"
+homepage = "https://github.com/dmerejkowsky/kak-spell"
 
 [tool.poetry.dependencies]
 python = "^3.7"
