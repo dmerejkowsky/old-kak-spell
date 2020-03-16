@@ -114,7 +114,7 @@ description = "Core utilities for Python packages"
 name = "packaging"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "20.1"
+version = "20.3"
 
 [package.dependencies]
 pyparsing = ">=2.0.2"
@@ -125,8 +125,8 @@ category = "main"
 description = "A module wrapper for os.path"
 name = "path"
 optional = false
-python-versions = ">=3.5"
-version = "13.1.0"
+python-versions = ">=3.6"
+version = "13.2.0"
 
 [package.dependencies]
 [package.dependencies.importlib-metadata]
@@ -175,7 +175,7 @@ description = "Python bindings for the Enchant spellchecking system"
 name = "pyenchant"
 optional = false
 python-versions = ">=3.5"
-version = "3.0.0rc3"
+version = "3.0.1"
 
 [[package]]
 category = "dev"
@@ -199,7 +199,7 @@ description = "pytest: simple powerful testing with Python"
 name = "pytest"
 optional = false
 python-versions = ">=3.5"
-version = "5.3.5"
+version = "5.4.1"
 
 [package.dependencies]
 atomicwrites = ">=1.0"
@@ -280,15 +280,15 @@ marker = "python_version < \"3.8\""
 name = "zipp"
 optional = false
 python-versions = ">=3.6"
-version = "2.2.0"
+version = "3.1.0"
 
 [package.extras]
 docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
-testing = ["jaraco.itertools"]
+testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "38007b068fdac22026d6d25dfb9904a9d014762c996ca281aac6bc3103f3674c"
-python-versions = "^3.7"
+content-hash = "fc3d2e866aac717bf40b6e8262b8a1112533138bfa4b9588bb5eb0eaf21e0b07"
+python-versions = "^3.6"
 
 [metadata.files]
 atomicwrites = [
@@ -344,12 +344,12 @@ mypy-extensions = [
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
 ]
 packaging = [
-    {file = "packaging-20.1-py2.py3-none-any.whl", hash = "sha256:170748228214b70b672c581a3dd610ee51f733018650740e98c7df862a583f73"},
-    {file = "packaging-20.1.tar.gz", hash = "sha256:e665345f9eef0c621aa0bf2f8d78cf6d21904eef16a93f020240b704a57f1334"},
+    {file = "packaging-20.3-py2.py3-none-any.whl", hash = "sha256:82f77b9bee21c1bafbf35a84905d604d5d1223801d639cf3ed140bd651c08752"},
+    {file = "packaging-20.3.tar.gz", hash = "sha256:3c292b474fda1671ec57d46d739d072bfd495a4f51ad01a055121d81e952b7a3"},
 ]
 path = [
-    {file = "path-13.1.0-py3-none-any.whl", hash = "sha256:41f0db0b6e32b3fc33c0bede630f6b58c7790af3a27c899e0c7ff69143d8696d"},
-    {file = "path-13.1.0.tar.gz", hash = "sha256:97249b37e5e4017429a780920147200a2215e268c1a18fa549fec0b654ce99b7"},
+    {file = "path-13.2.0-py3-none-any.whl", hash = "sha256:6168469b98e5531dfb378c384190113d72d8a90f0c65d792ef1d9c9e50fc3282"},
+    {file = "path-13.2.0.tar.gz", hash = "sha256:10a149813a921540fd48ad639ec9157d08c2149ac2bcc399c74304450f70fdf2"},
 ]
 pluggy = [
     {file = "pluggy-0.13.1-py2.py3-none-any.whl", hash = "sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d"},
@@ -364,10 +364,10 @@ pycodestyle = [
     {file = "pycodestyle-2.5.0.tar.gz", hash = "sha256:e40a936c9a450ad81df37f549d676d127b1b66000a6c500caa2b085bc0ca976c"},
 ]
 pyenchant = [
-    {file = "pyenchant-3.0.0rc3-py3-none-any.whl", hash = "sha256:b45ce9f9ffc2e039b77b551eb7a0cb1e131041ab62445197ffbf3460f04121ac"},
-    {file = "pyenchant-3.0.0rc3-py3-none-win32.whl", hash = "sha256:0207d1e34e33b984c9b62ddfb9bf21dc11bcac4838d523c50fce538fb37ed41e"},
-    {file = "pyenchant-3.0.0rc3-py3-none-win_amd64.whl", hash = "sha256:7970c0b2d2466d41ffb3ec4d4a664f1ecfd1a0819fe37b4e766c3a7e117c6371"},
-    {file = "pyenchant-3.0.0rc3.tar.gz", hash = "sha256:eedacebef285e759c9852be55e3b1f3a790df03e801e7a7803098cce6a417fb7"},
+    {file = "pyenchant-3.0.1-py3-none-any.whl", hash = "sha256:43032310df4a29f08a5ce5b65f2aeb0ec1bca5ef08bcf3156423d50e0e1d7d0c"},
+    {file = "pyenchant-3.0.1-py3-none-win32.whl", hash = "sha256:8b4ef051ef75fa7695c5259c34fb51bc54aa76a39c04db4d4fda997a5e94792a"},
+    {file = "pyenchant-3.0.1-py3-none-win_amd64.whl", hash = "sha256:9fb8edbaa211e8594b4c3d26bbda8e78d6d5e260df50e6c9600be171aa83d575"},
+    {file = "pyenchant-3.0.1.tar.gz", hash = "sha256:1bd26a644abf80196a9de3f2d820ebafb7e7f78385e392ce77cb1552f164d559"},
 ]
 pyflakes = [
     {file = "pyflakes-2.1.1-py2.py3-none-any.whl", hash = "sha256:17dbeb2e3f4d772725c777fabc446d5634d1038f234e77343108ce445ea69ce0"},
@@ -378,8 +378,8 @@ pyparsing = [
     {file = "pyparsing-2.4.6.tar.gz", hash = "sha256:4c830582a84fb022400b85429791bc551f1f4871c33f23e44f353119e92f969f"},
 ]
 pytest = [
-    {file = "pytest-5.3.5-py3-none-any.whl", hash = "sha256:ff615c761e25eb25df19edddc0b970302d2a9091fbce0e7213298d85fb61fef6"},
-    {file = "pytest-5.3.5.tar.gz", hash = "sha256:0d5fe9189a148acc3c3eb2ac8e1ac0742cb7618c084f3d228baaec0c254b318d"},
+    {file = "pytest-5.4.1-py3-none-any.whl", hash = "sha256:0e5b30f5cb04e887b91b1ee519fa3d89049595f428c1db76e73bd7f17b09b172"},
+    {file = "pytest-5.4.1.tar.gz", hash = "sha256:84dde37075b8805f3d1f392cc47e38a0e59518fb46a431cfdaf7cf1ce805f970"},
 ]
 pytest-mock = [
     {file = "pytest-mock-2.0.0.tar.gz", hash = "sha256:b35eb281e93aafed138db25c8772b95d3756108b601947f89af503f8c629413f"},
@@ -426,6 +426,6 @@ wcwidth = [
     {file = "wcwidth-0.1.8.tar.gz", hash = "sha256:f28b3e8a6483e5d49e7f8949ac1a78314e740333ae305b4ba5defd3e74fb37a8"},
 ]
 zipp = [
-    {file = "zipp-2.2.0-py36-none-any.whl", hash = "sha256:d65287feb793213ffe11c0f31b81602be31448f38aeb8ffc2eb286c4f6f6657e"},
-    {file = "zipp-2.2.0.tar.gz", hash = "sha256:5c56e330306215cd3553342cfafc73dda2c60792384117893f3a83f8a1209f50"},
+    {file = "zipp-3.1.0-py3-none-any.whl", hash = "sha256:aa36550ff0c0b7ef7fa639055d797116ee891440eac1a56f378e2d3179e0320b"},
+    {file = "zipp-3.1.0.tar.gz", hash = "sha256:c599e4d75c98f6798c509911d08a22e6c021d074469042177c8c86fb92eefd96"},
 ]
