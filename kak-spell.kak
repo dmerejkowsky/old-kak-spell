@@ -49,7 +49,7 @@ define-command kak-spell-add -params 0..1 -docstring "add the selection to the u
   write
 }
 
-define-command kak-spell-remove -docstring "remove the selection from the user dict" %{ \
+define-command kak-spell-remove -params 0..1 -docstring "remove the selection from the user dict" %{ \
   evaluate-commands %sh{
     if [ -z "${kak_opt_kak_spell_lang}" ]; then
       printf %s\\n 'echo -markup {Error}The `kak_spell_lang` option is not set'
