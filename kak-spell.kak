@@ -32,14 +32,20 @@ define-command kak-spell-next -docstring "go to the next spelling error" %{
 }
 
 
-define-command kak-spell-add -docstring "add the selection to the user dict" %{ \
+define-command kak-spell-add -params 0..1 -docstring "add the selection to the user dict" %{ \
   evaluate-commands %sh{
     if [ -z "${kak_opt_kak_spell_lang}" ]; then
       printf %s\\n 'echo -markup {Error}The `kak_spell_lang` option is not set'
       exit 1
     fi
   }
-  nop %sh{ kak-spell --lang $kak_opt_kak_spell_lang add $kak_selection }
+  nop %sh{
+    if [ -z "$1" ]; then
+      kak-spell --lang $kak_opt_kak_spell_lang add $kak_selection
+    else
+      kak-spell --lang $kak_opt_kak_spell_lang add $1
+    fi
+  }
   write
 }
 
@@ -50,7 +56,13 @@ define-command kak-spell-remove -docstring "remove the selection from the user d
       exit 1
     fi
   }
-  nop %sh{ kak-spell --lang $kak_opt_kak_spell_lang remove $kak_selection }
+  nop %sh{
+    if [ -z "$1" ]; then
+      kak-spell --lang $kak_opt_kak_spell_lang remove $kak_selection
+    else
+      kak-spell --lang $kak_opt_kak_spell_lang remove $1
+    fi
+  }
   write
 }
 
