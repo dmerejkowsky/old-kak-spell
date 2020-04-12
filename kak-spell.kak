@@ -10,6 +10,8 @@ define-command kak-spell \
        add-highlighter buffer/spell ranges spell_errors
      %}
 
+    hook -once -group kak-spell buffer BufWritePost .* kak-spell
+
     evaluate-commands %sh{
       if [ -n "$1" ]; then
          echo "set buffer kak_spell_lang $1"
@@ -62,7 +64,6 @@ define-command kak-spell-add -params 0..1 -docstring "add the selection to the u
     fi
   }
   write
-  kak-spell %opt{kak_spell_lang}
 }
 
 define-command kak-spell-remove -params 0..1 -docstring "remove the selection from the user dict" %{ \
@@ -80,7 +81,6 @@ define-command kak-spell-remove -params 0..1 -docstring "remove the selection fr
     fi
   }
   write
-  kak-spell %opt{kak_spell_lang}
 }
 
 define-command kak-spell-replace -docstring "replace the selection with a suggestion " %{ \
