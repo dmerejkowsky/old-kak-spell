@@ -1,21 +1,22 @@
 declare-option str kak_spell_lang
 declare-option range-specs spell_errors
 
-define-command kak-spell \
-  -params 0..1 \
-  -docstring %{kak-spell [<language>]: enable spell checking for the current buffer %} \
+define-command -params 1 kak-spell-enable %{
+  evaluate-commands %sh{
+    echo "set buffer kak_spell_lang $1"
+  }
+  add-highlighter buffer/spell ranges spell_errors
+  hook -group kak-spell buffer BufWritePost .* kak-spell
+}
+
+define-command kak-spell-disable %{
+  remove-highlighter buffer/spell
+  remove-hooks buffer kak-spell
+}
+
+define-command kak-spell -docstring "check the current buffer for spelling errors" \
   %{
-     # add the highlighter (only once)
-     try %{
-       add-highlighter buffer/spell ranges spell_errors
-     %}
-
-    hook -once -group kak-spell buffer BufWritePost .* kak-spell
-
     evaluate-commands %sh{
-      if [ -n "$1" ]; then
-         echo "set buffer kak_spell_lang $1"
-      fi
       kak-spell \
         --lang "en_US" \
         check \
@@ -26,11 +27,6 @@ define-command kak-spell \
      }
 
   }
-
-define-command kak-spell-clear -docstring "disable spell checking for the current buffer" \
-  %{
-    remove-highlighter buffer/spell
-   }
 
 define-command kak-spell-next -docstring "go to the next spelling error" %{
    evaluate-commands %sh{
