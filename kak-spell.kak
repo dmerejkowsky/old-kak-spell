@@ -1,34 +1,49 @@
 declare-option str kak_spell_lang
-
-# notes
-#   we re-use the existing lint.kak script to display and navigate errors
-#   we use `write` to trigger a spell check automatically
+declare-option range-specs spell_errors
 
 define-command kak-spell \
-  -params 1 \
+  -params 0..1 \
   -docstring %{kak-spell [<language>]: enable spell checking for the current buffer %} \
   %{
+     # add the highlighter (only once)
+     try %{
+       add-highlighter buffer/spell ranges spell_errors
+     %}
+
     evaluate-commands %sh{
-      printf "set buffer kak_spell_lang %s" $1
-    }
-    # need a separate evaluate-commands block because we just set the option :)
-    evaluate-commands %sh{
-      printf "set buffer lintcmd \"kak-spell --lang $kak_opt_kak_spell_lang check --filetype $kak_opt_filetype \""
-    }
-    lint-enable
-    lint-on-save
-    write
+      if [ -n "$1" ]; then
+         echo "set buffer kak_spell_lang $1"
+      fi
+      kak-spell \
+        --lang "en_US" \
+        check \
+        --filetype "${kak_opt_filetype}" \
+        "${kak_buffile}" \
+        --kak-timestamp ${kak_timestamp} \
+        --kakoune
+     }
+
   }
 
 define-command kak-spell-clear -docstring "disable spell checking for the current buffer" \
   %{
-     unset-option buffer lintcmd
-     lint-disable
+    remove-highlighter buffer/spell
    }
 
 define-command kak-spell-next -docstring "go to the next spelling error" %{
-  lint-next-error
-  execute-keys e
+   evaluate-commands %sh{
+       kak-spell next \
+        --ranges "${kak_opt_spell_errors}" \
+        --pos "${kak_cursor_line}.${kak_cursor_column}"
+   }
+}
+
+define-command kak-spell-previous -docstring "go to the previous spelling error" %{
+   evaluate-commands %sh{
+       kak-spell previous \
+        --ranges "${kak_opt_spell_errors}" \
+        --pos "${kak_cursor_line}.${kak_cursor_column}"
+   }
 }
 
 
@@ -47,6 +62,7 @@ define-command kak-spell-add -params 0..1 -docstring "add the selection to the u
     fi
   }
   write
+  kak-spell %opt{kak_spell_lang}
 }
 
 define-command kak-spell-remove -params 0..1 -docstring "remove the selection from the user dict" %{ \
@@ -64,6 +80,7 @@ define-command kak-spell-remove -params 0..1 -docstring "remove the selection fr
     fi
   }
   write
+  kak-spell %opt{kak_spell_lang}
 }
 
 define-command kak-spell-replace -docstring "replace the selection with a suggestion " %{ \
