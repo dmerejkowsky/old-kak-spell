@@ -21,7 +21,7 @@ def test_can_add_word_to_pwl(mocked_xdg: Any, tmp_path: Path) -> None:
     checker.add("CMake")
     expected_path = tmp_path / "share" / "kak-spell" / "en_US.pwl"
     assert expected_path.exists()
-    lines = expected_path.lines(retain=False)
+    lines = expected_path.read_text().splitlines(keepends=False)
     assert len(lines) == 1
 
 
@@ -47,12 +47,12 @@ def test_can_remove_word_from_pwl(mocked_xdg: Any, tmp_path: Path) -> None:
     checker = Checker(lang="en_US")
     checker.add("CMake")
     expected_path = tmp_path / "share" / "kak-spell" / "en_US.pwl"
-    lines = expected_path.lines(retain=False)
+    lines = expected_path.read_text().splitlines(keepends=False)
     assert len(lines) == 1
 
     checker.remove("CMake")
     expected_path = tmp_path / "share" / "kak-spell" / "en_US.pwl"
-    lines = expected_path.lines(retain=False)
+    lines = expected_path.read_text().splitlines(keepends=False)
     assert len(lines) == 0
 
 

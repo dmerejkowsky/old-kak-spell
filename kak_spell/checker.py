@@ -96,12 +96,12 @@ class Checker:
                 yield Error(path, lineno, error.wordpos + 1, error.word)
 
     def add(self, word: str) -> None:
-        words = set(self.pwl_path.lines(retain=False))
+        words = set(self.pwl_path.read_text().splitlines(keepends=False))
         words.add(word)
         self.pwl_path.write_lines(sorted(words))
 
     def remove(self, word: str) -> None:
-        words = set(self.pwl_path.lines(retain=False))
+        words = set(self.pwl_path.read_text().splitlines(keepends=False))
         words.discard(word)
         self.pwl_path.write_lines(sorted(words))
 
