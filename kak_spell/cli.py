@@ -68,6 +68,12 @@ def main(argv: Optional[List[str]] = None) -> None:
     )
     check_parser.add_argument("--kak-timestamp", help="kakoune timestamp", type=int)
 
+    list_parser = subparsers.add_parser("list")
+    list_parser.add_argument("path", type=Path)
+    list_parser.add_argument(
+        "--filetype", help="file type, as set by kakoune in $kak_opt_filetype"
+    )
+
     add_parser = subparsers.add_parser("add")
     add_parser.add_argument("word")
 
@@ -99,9 +105,8 @@ def main(argv: Optional[List[str]] = None) -> None:
         word = args.word
         remove_word(word, lang=lang)
     elif args.command == "check":
-        path = args.path
         ok = check(
-            path,
+            args.path,
             lang=lang,
             filetype=args.filetype,
             kakoune=args.kakoune,
@@ -109,6 +114,8 @@ def main(argv: Optional[List[str]] = None) -> None:
         )
         if not ok:
             sys.exit(1)
+    elif args.command == "list":
+        kak.list(args.path, lang=lang, filetype=args.filetype)
     elif args.command == "replace":
         word = args.word
         kakoune = args.kakoune

@@ -1,5 +1,6 @@
 declare-option str kak_spell_lang
 declare-option range-specs spell_errors
+declare-option -hidden str kak_spell_current_error
 
 define-command -params 1 kak-spell-enable %{
   evaluate-commands %sh{
@@ -24,6 +25,28 @@ define-command kak-spell -docstring "check the current buffer for spelling error
       --kak-timestamp ${kak_timestamp} \
       --kakoune
   }
+}
+
+define-command kak-spell-list -docstring "list spelling errors" %{
+   evaluate-commands %sh{
+    kak-spell \
+      --lang "${kak_opt_kak_spell_lang}" \
+      list \
+      --filetype "${kak_opt_filetype}" \
+      "${kak_buffile}" \
+   }
+}
+
+define-command kak-spell-jump -docstring "jump to the spelling error behind the cursor" %{
+  execute-keys '
+    <esc>
+    :edit -existing *spelling* <ret>
+    gi <a-E> <esc>
+    :set-option global kak_spell_current_error %val{selection} <ret>
+    ga
+    :select %opt{kak_spell_current_error} <ret>
+  '
+
 }
 
 define-command kak-spell-next -docstring "go to the next spelling error" %{

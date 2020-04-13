@@ -1,6 +1,7 @@
-from typing import Any, List, Tuple
+from typing import Any, List, Tuple, Optional
+from path import Path
 from . import log
-from .checker import Error
+from .checker import Checker, Error
 
 
 def set_spell_errors(errors: Any, *, timestamp: int) -> None:
@@ -35,6 +36,21 @@ def menu_from_replacements(replacements: List[str]) -> None:
         menu_entry = menu_entry.replace("ENTRY", entry)
         menu += " " + menu_entry
     cmd = "menu " + menu
+    print(cmd)
+
+
+def list(path: Path, *, lang: str, filetype: Optional[str] = None,) -> None:
+    checker = Checker(lang=lang)
+    errors = checker.check(path, filetype=filetype)
+    print("edit -scratch *spelling*")
+    cmd = "execute-keys \\% <ret> d i %{"
+    for error in errors:
+        line, col, length = error_to_range(error)
+        cmd += f"{line}.{col},{line}.{col+length-1} {error.word}<ret>"
+    cmd += "}"
+    cmd += "<esc> gg"
+    cmd += "\nhook buffer -group kak-spell NormalKey <ret> kak-spell-jump"
+    log(cmd)
     print(cmd)
 
 
