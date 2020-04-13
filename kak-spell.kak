@@ -14,38 +14,35 @@ define-command kak-spell-disable %{
   remove-hooks buffer kak-spell
 }
 
-define-command kak-spell -docstring "check the current buffer for spelling errors" \
-  %{
-    evaluate-commands %sh{
-      kak-spell \
-        --lang "en_US" \
-        check \
-        --filetype "${kak_opt_filetype}" \
-        "${kak_buffile}" \
-        --kak-timestamp ${kak_timestamp} \
-        --kakoune
-     }
-
+define-command kak-spell -docstring "check the current buffer for spelling errors" %{
+  evaluate-commands %sh{
+    kak-spell \
+      --lang "${kak_opt_kak_spell_lang}" \
+      check \
+      --filetype "${kak_opt_filetype}" \
+      "${kak_buffile}" \
+      --kak-timestamp ${kak_timestamp} \
+      --kakoune
   }
+}
 
 define-command kak-spell-next -docstring "go to the next spelling error" %{
    evaluate-commands %sh{
-       kak-spell next \
-        --ranges "${kak_opt_spell_errors}" \
-        --pos "${kak_cursor_line}.${kak_cursor_column}"
+     kak-spell next \
+      --ranges "${kak_opt_spell_errors}" \
+      --pos "${kak_cursor_line}.${kak_cursor_column}"
    }
 }
 
 define-command kak-spell-previous -docstring "go to the previous spelling error" %{
    evaluate-commands %sh{
-       kak-spell previous \
-        --ranges "${kak_opt_spell_errors}" \
-        --pos "${kak_cursor_line}.${kak_cursor_column}"
+     kak-spell previous \
+      --ranges "${kak_opt_spell_errors}" \
+      --pos "${kak_cursor_line}.${kak_cursor_column}"
    }
 }
 
-
-define-command kak-spell-add -params 0..1 -docstring "add the selection to the user dict" %{ \
+define-command kak-spell-add -params 0..1 -docstring "add the selection to the user dict" %{
   evaluate-commands %sh{
     if [ -z "${kak_opt_kak_spell_lang}" ]; then
       printf %s\\n 'echo -markup {Error}The `kak_spell_lang` option is not set'
@@ -62,7 +59,7 @@ define-command kak-spell-add -params 0..1 -docstring "add the selection to the u
   write
 }
 
-define-command kak-spell-remove -params 0..1 -docstring "remove the selection from the user dict" %{ \
+define-command kak-spell-remove -params 0..1 -docstring "remove the selection from the user dict" %{
   evaluate-commands %sh{
     if [ -z "${kak_opt_kak_spell_lang}" ]; then
       printf %s\\n 'echo -markup {Error}The `kak_spell_lang` option is not set'
@@ -79,7 +76,7 @@ define-command kak-spell-remove -params 0..1 -docstring "remove the selection fr
   write
 }
 
-define-command kak-spell-replace -docstring "replace the selection with a suggestion " %{ \
+define-command kak-spell-replace -docstring "replace the selection with a suggestion " %{
   evaluate-commands %sh{
     if [ -z "${kak_opt_kak_spell_lang}" ]; then
       printf %s\\n 'echo -markup {Error}The `kak_spell_lang` option is not set'

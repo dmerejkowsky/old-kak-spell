@@ -1,7 +1,7 @@
-import os
 from typing import Any
 from .checker import Checker  # noqa: F401
 import datetime
+
 
 # Useful when debugging kak scripts
 def log(stuff: Any) -> None:

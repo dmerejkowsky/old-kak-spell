@@ -1,10 +1,12 @@
-from typing import Any
+from typing import Any, List
 from kak_spell.kak import (
     convert_to_pos,
     convert_ranges,
     get_next_selection,
     get_previous_selection,
     goto_and_select,
+    goto_next,
+    Range,
 )
 
 
@@ -17,7 +19,12 @@ def test_convert_ranges_option() -> None:
     assert convert_ranges(option) == [(1, 21, 30), (2, 19, 27)]
 
 
-def test_get_next_selection_no_errors()
+def test_goto_next_no_errors(capsys: Any) -> None:
+    pos = "1.1"
+    ranges = "5 "
+    goto_next(pos, ranges)
+    capture = capsys.readouterr()
+    assert "no spelling errors" in capture.out
 
 
 def test_get_next_selection_same_line_after_cursor() -> None:

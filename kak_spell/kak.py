@@ -28,14 +28,15 @@ def menu_from_replacements(replacements: List[str]) -> None:
         # also note that we call 'write' and 'kak-spell' *in* the menu action, otherwise
         # if you call `write` *after* the menu command, the buffer is saved without the new
         # contents written !
-        menu_entry = "%{ENTRY} %{execute-keys -itersel %{cENTRY<esc>be} :write <ret> :kak-spell <ret>}"
+        menu_entry = "%{ENTRY} %{execute-keys -itersel %{cENTRY<esc>be} "
+        menu_entry += ":write <ret> :kak-spell <ret>}"
         menu_entry = menu_entry.replace("ENTRY", entry)
         menu += " " + menu_entry
     cmd = "menu " + menu
     print(cmd)
 
 
-def show_no_errors():
+def show_no_errors() -> None:
     print("echo -markup {green} no spelling errors")
 
 
