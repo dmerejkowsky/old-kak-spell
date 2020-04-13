@@ -11,8 +11,8 @@ def test_can_find_errors(mocked_xdg: Any, tmp_path: Path) -> None:
     errors = list(checker.check(readme_path))
     assert len(errors) == 1
     actual = errors[0]
-    assert actual.line == 1
-    assert actual.offset == 11
+    assert actual.lineno == 1
+    assert actual.offset == 10
     assert actual.word == "missstake"
 
 

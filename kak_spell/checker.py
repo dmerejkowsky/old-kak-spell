@@ -35,9 +35,12 @@ KNOWN_FILETYPES: Dict[str, LinesGetter] = {"git-commit": get_lines_git_commit}
 @attr.s
 class Error:
     path: Path = attr.ib()
-    line: int = attr.ib()
+    lineno: int = attr.ib()
     offset: int = attr.ib()
     word: str = attr.ib()
+    # We need to store the whole line in order
+    # to compute bytes offsets for kakoune
+    line: str = attr.ib()
 
 
 def get_pwl_path(lang: str) -> Path:
@@ -93,7 +96,7 @@ class Checker:
             for error in self._checker:
                 if filetype == "markdown" and is_inside_backticks(line, error):
                     continue
-                yield Error(path, lineno, error.wordpos + 1, error.word)
+                yield Error(path, lineno, error.wordpos, error.word, line)
 
     def add(self, word: str) -> None:
         words = set(self.pwl_path.read_text().splitlines(keepends=False))

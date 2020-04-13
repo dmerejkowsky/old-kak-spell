@@ -39,7 +39,7 @@ def check(
         ok = True
         for error in errors:
             ok = False
-            print(f"{path}:{error.line}:{error.offset}: error: {error.word}")
+            print(f"{path}:{error.lineno}:{error.offset + 1}: error: {error.word}")
     return ok
 
 

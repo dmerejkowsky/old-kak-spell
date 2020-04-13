@@ -1,14 +1,13 @@
 from typing import Any, List, Tuple
 from . import log
+from .checker import Error
 
 
 def set_spell_errors(errors: Any, *, timestamp: int) -> None:
     cmd = f"set-option buffer spell_errors {timestamp}"
     n = 0
     for error in errors:
-        line = error.line
-        col = error.offset
-        length = len(error.word)
+        (line, col, length) = error_to_range(error)
         cmd += f" {line}.{col}+{length}|Error"
         n += 1
     log(cmd)
@@ -60,17 +59,23 @@ def goto_previous(pos_option: str, ranges_option: str) -> None:
     goto_and_select(previous_selection)
 
 
+# (line, col)
 Pos = Tuple[int, int]
+
+# (line, col, length)
 Range = Tuple[int, int, int]
 
 
-# (line, col)
+def error_to_range(error: Error) -> Range:
+    bytes_offset = len((error.line[: error.offset]).encode())
+    return (error.lineno, bytes_offset + 1, len(error.word.encode()))
+
+
 def convert_to_pos(pos_option: str) -> Pos:
     start, end = pos_option.split(".")
     return int(start), int(end)
 
 
-# (line, col, length)
 def convert_ranges(ranges_option: str) -> List[Range]:
     if ranges_option == "0":
         return []
@@ -89,7 +94,7 @@ def convert_ranges(ranges_option: str) -> List[Range]:
 def goto_and_select(range: Range) -> None:
     line, col, end = range
     length = end - col
-    cmd = f"execute-keys {line}g {col-1}l {length}L"
+    cmd = f"select {line}.{col},{line}.{col+length}"
     print(cmd)
 
 
