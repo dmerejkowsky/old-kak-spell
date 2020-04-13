@@ -19,6 +19,9 @@ def set_spell_errors(errors: Any, *, timestamp: int) -> None:
 
 
 def menu_from_replacements(replacements: List[str]) -> None:
+    if not replacements:
+        print("fail no suggestions")
+        return
     menu = ""
     for entry in replacements:
         # Note: %{...} is kakoune way of grouping stuff that may - or not

@@ -9,6 +9,7 @@ from kak_spell.kak import (
     get_previous_selection,
     goto_and_select,
     goto_next,
+    menu_from_replacements,
     Range,
 )
 
@@ -77,6 +78,14 @@ def test_goto_and_select(capsys: Any) -> None:
 
     assert not capture.err
     assert capture.out == "select 2.4,2.9\n"
+
+
+def test_replace_no_suggestion(capsys: Any) -> None:
+    menu_from_replacements([])
+    capture = capsys.readouterr()
+
+    assert not capture.err
+    assert capture.out == "fail no suggestions\n"
 
 
 def test_get_previous_selection_same_line_after_cursor() -> None:
