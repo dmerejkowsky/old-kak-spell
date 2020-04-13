@@ -1,3 +1,6 @@
+# 0.2.1 (2020-04-13)
+* Add `kak-spell-list`. Fix #5
+
 # 0.2.0 (2020-04-12)
 
 * Allow adding or removing words without selecting them first
