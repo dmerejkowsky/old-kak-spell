@@ -23,7 +23,7 @@ plug "dmerejkowsky/kak-spell"
 4. (optional): declare a user mode and some mappings:
 
 ```kak
-plug "dmerejkowsky/kak-spell" %{
+plug "dmerejkowsky/kak-spell" config %{
   declare-user-mode kak-spell
   map global user s ': enter-user-mode kak-spell<ret>' -docstring 'enter spell user mode'
   map global kak-spell a ': kak-spell-add<ret>' -docstring 'add the selection to the user dict'
