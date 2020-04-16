@@ -33,7 +33,8 @@ def check(
     checker = Checker(lang=lang)
     errors = checker.check(path, filetype=filetype)
     if kakoune:
-        kak.set_spell_errors(errors, timestamp=kak_timestamp)
+        # We need a real list because we'll iterate on it twice
+        kak.handle_spelling_errors(list(errors), timestamp=kak_timestamp)
         return True
     else:
         ok = True
@@ -115,7 +116,7 @@ def main(argv: Optional[List[str]] = None) -> None:
         if not ok:
             sys.exit(1)
     elif args.command == "list":
-        kak.list(args.path, lang=lang, filetype=args.filetype)
+        kak.show_spelling_buffer()
     elif args.command == "replace":
         word = args.word
         kakoune = args.kakoune

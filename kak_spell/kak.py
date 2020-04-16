@@ -1,12 +1,35 @@
-from typing import Any, List, Tuple, Optional
-from path import Path
+from typing import Any, List, Tuple
 from . import log
-from .checker import Checker, Error
+from .checker import Error
 
 
-def set_spell_errors(errors: Any, *, timestamp: int) -> None:
-    cmd = f"set-option buffer spell_errors {timestamp}"
+def handle_spelling_errors(errors: List[Error], *, timestamp: int) -> None:
+    insert_errors_in_scratch_buffer(errors)
+    set_spell_errors(errors, timestamp=timestamp)
+
+
+def show_spelling_buffer() -> None:
+    print("edit -existing *spelling*")
+
+
+def insert_errors_in_scratch_buffer(errors: Any) -> None:
+    # TODO: -fifo ?
+    print("edit -scratch *spelling*")
+    cmd = "execute-keys \\% <ret> d i %{"
+    for error in errors:
+        line, col, length = error_to_range(error)
+        cmd += f"{line}.{col},{line}.{col+length-1} {error.word}<ret>"
+    cmd += "}"
+    cmd += "<esc> gg"
+    cmd += "\n" "hook buffer -group kak-spell NormalKey <ret> kak-spell-jump"
+    cmd += "\n" "execute-keys <esc> ga"
+    log(cmd)
+    print(cmd)
+
+
+def set_spell_errors(errors: List[Error], *, timestamp: int) -> None:
     n = 0
+    cmd = f"set-option buffer spell_errors {timestamp}"
     for error in errors:
         (line, col, length) = error_to_range(error)
         cmd += f" {line}.{col}+{length}|Error"
@@ -36,21 +59,6 @@ def menu_from_replacements(replacements: List[str]) -> None:
         menu_entry = menu_entry.replace("ENTRY", entry)
         menu += " " + menu_entry
     cmd = "menu " + menu
-    print(cmd)
-
-
-def list(path: Path, *, lang: str, filetype: Optional[str] = None,) -> None:
-    checker = Checker(lang=lang)
-    errors = checker.check(path, filetype=filetype)
-    print("edit -scratch *spelling*")
-    cmd = "execute-keys \\% <ret> d i %{"
-    for error in errors:
-        line, col, length = error_to_range(error)
-        cmd += f"{line}.{col},{line}.{col+length-1} {error.word}<ret>"
-    cmd += "}"
-    cmd += "<esc> gg"
-    cmd += "\nhook buffer -group kak-spell NormalKey <ret> kak-spell-jump"
-    log(cmd)
     print(cmd)
 
 
