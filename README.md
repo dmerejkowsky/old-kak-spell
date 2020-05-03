@@ -39,7 +39,7 @@ plug "dmerejkowsky/kak-spell" config %{
 ```
 
 Note that `kak-spell-enable` does several things:
-* Set a bufferscoped option `kak_spell_lang` that is used by other commands
+* Set a buffer scoped option `kak_spell_lang` that is used by other commands
 * Add a highlighter so that spelling errors are colored with the `Error` face
 * Adds a `BufWritePost` hook to spell check the buffer each time it gets written
 
