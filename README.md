@@ -25,7 +25,7 @@ plug "dmerejkowsky/kak-spell"
 ```kak
 plug "dmerejkowsky/kak-spell" config %{
   declare-user-mode kak-spell
-  map global user s ': enter-user-mode kak-spell<ret>' -docstring 'enter spell user mode'
+  map global user s ': enter-user-mode -lock kak-spell<ret>' -docstring 'enter spell user mode'
   map global kak-spell a ': kak-spell-add<ret>' -docstring 'add the selection to the user dict'
   map global kak-spell d ': kak-spell-disable<ret>' -docstring 'clear spelling highlighters'
   map global kak-spell e ': kak-spell-enable en_US<ret> :kak-spell <ret>' -docstring 'enable spell check in English'
