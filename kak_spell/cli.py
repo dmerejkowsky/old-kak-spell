@@ -34,7 +34,7 @@ def check(
     errors = checker.check(path, filetype=filetype)
     if kakoune:
         # We need a real list because we'll iterate on it twice
-        kak.handle_spelling_errors(list(errors), timestamp=kak_timestamp)
+        kak.handle_spelling_errors(list(errors), timestamp=kak_timestamp, lang=lang)
         return True
     else:
         ok = True

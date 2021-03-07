@@ -3,8 +3,8 @@ from . import log
 from .checker import Error
 
 
-def handle_spelling_errors(errors: List[Error], *, timestamp: int) -> None:
-    insert_errors_in_scratch_buffer(errors)
+def handle_spelling_errors(errors: List[Error], *, timestamp: int, lang: str) -> None:
+    insert_errors_in_scratch_buffer(errors, lang=lang)
     set_spell_errors(errors, timestamp=timestamp)
 
 
@@ -12,7 +12,7 @@ def show_spelling_buffer() -> None:
     print("edit -existing *spelling*")
 
 
-def insert_errors_in_scratch_buffer(errors: Any) -> None:
+def insert_errors_in_scratch_buffer(errors: List[Error], lang: str) -> None:
     # TODO: -fifo ?
     print("edit -scratch *spelling*")
     cmd = "execute-keys \\% <ret> d i %{"
@@ -22,6 +22,10 @@ def insert_errors_in_scratch_buffer(errors: Any) -> None:
     cmd += "}"
     cmd += "<esc> gg"
     cmd += "\n" "hook buffer -group kak-spell NormalKey <ret> kak-spell-jump"
+    cmd += (
+        "\n"
+        f"hook buffer -group kak-spell NormalKey a 'kak-spell-add-from-spelling-buffer {lang}'"
+    )
     cmd += "\n" "execute-keys <esc> ga"
     log(cmd)
     print(cmd)
