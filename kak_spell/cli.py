@@ -3,7 +3,7 @@ from typing import List, Optional
 import argparse
 import sys
 
-from path import Path
+from pathlib import Path
 
 from .checker import Checker
 from . import kak

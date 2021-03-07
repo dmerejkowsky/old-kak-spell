@@ -1,6 +1,6 @@
 from typing import Any
 import pytest
-from path import Path
+from pathlib import Path
 import xdg.BaseDirectory
 
 

@@ -1,5 +1,5 @@
 from typing import Any, List
-from path import Path
+from pathlib import Path
 from kak_spell.checker import Error
 from kak_spell.kak import (
     convert_to_pos,

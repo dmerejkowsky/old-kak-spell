@@ -3,7 +3,7 @@ import attr
 import enchant
 import enchant.checker
 from enchant.tokenize import Filter
-from path import Path
+from pathlib import Path
 import re
 import xdg.BaseDirectory
 
@@ -45,7 +45,7 @@ class Error:
 
 def get_pwl_path(lang: str) -> Path:
     data_path = Path(xdg.BaseDirectory.save_data_path("kak-spell"))
-    data_path.makedirs_p()
+    data_path.mkdir(parents=True, exist_ok=True)
     pwl_path = data_path / f"{lang}.pwl"
     if not pwl_path.exists():
         pwl_path.write_text("")
@@ -62,8 +62,7 @@ def get_lines(path: Path, filetype: Optional[str] = None) -> Iterator[NumberedLi
 
 
 class UrlFilter(Filter):  # type: ignore
-    r"""Filter skipping over urls
-    """
+    r"""Filter skipping over urls"""
     _pattern = re.compile(r"(\w+)://\S+")
 
     def _skip(self, word: str) -> bool:
@@ -101,12 +100,16 @@ class Checker:
     def add(self, word: str) -> None:
         words = set(self.pwl_path.read_text().splitlines(keepends=False))
         words.add(word)
-        self.pwl_path.write_lines(sorted(words))
+        with self.pwl_path.open("w") as f:
+            for word in sorted(words):
+                f.write(word + "\n")
 
     def remove(self, word: str) -> None:
         words = set(self.pwl_path.read_text().splitlines(keepends=False))
         words.discard(word)
-        self.pwl_path.write_lines(sorted(words))
+        with self.pwl_path.open("w") as f:
+            for word in sorted(words):
+                f.write(word + "\n")
 
     def replace(self, word: str) -> List[str]:
         return self._checker.suggest(word)  # type: ignore

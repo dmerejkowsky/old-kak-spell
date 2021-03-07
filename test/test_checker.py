@@ -1,5 +1,5 @@
 from typing import Any
-from path import Path
+from pathlib import Path
 
 from kak_spell import Checker
 
@@ -16,13 +16,14 @@ def test_can_find_errors(mocked_xdg: Any, tmp_path: Path) -> None:
     assert actual.word == "missstake"
 
 
-def test_can_add_word_to_pwl(mocked_xdg: Any, tmp_path: Path) -> None:
+def test_can_add_words_to_pwl(mocked_xdg: Any, tmp_path: Path) -> None:
     checker = Checker(lang="en_US")
+    checker.add("Python")
     checker.add("CMake")
     expected_path = tmp_path / "share" / "kak-spell" / "en_US.pwl"
     assert expected_path.exists()
     lines = expected_path.read_text().splitlines(keepends=False)
-    assert len(lines) == 1
+    assert lines == ["CMake", "Python"]
 
 
 def test_ignore_backticks(tmp_path: Path, mocked_xdg: Any) -> None:
