@@ -12,7 +12,7 @@ def test_check_no_errors(tmp_path: Path) -> None:
     kak_spell.cli.main(argv=["check", str(readme_path)])
 
 
-def test_check_with_errors(tmp_path: Path, capsys: Any) -> None:
+def test_check_with_errors(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
     readme_path = tmp_path / "readme.txt"
     readme_path.write_text(
         "No spelling errors on first line\nBut a spelling missstake here\n"
@@ -54,14 +54,14 @@ def test_remove(tmp_path: Path, mocked_xdg: Any) -> None:
         kak_spell.cli.main(argv=["check", str(readme_path)])
 
 
-def test_replace_default_output(capsys: Any) -> None:
+def test_replace_default_output(capsys: pytest.CaptureFixture[str]) -> None:
     kak_spell.cli.main(argv=["replace", "missstake"])
     capture = capsys.readouterr()
     assert not capture.err
     assert "mistake" in capture.out
 
 
-def test_replace_kakoune_output(capsys: Any) -> None:
+def test_replace_kakoune_output(capsys: pytest.CaptureFixture[str]) -> None:
     kak_spell.cli.main(argv=["replace", "missstake", "--kakoune"])
     capture = capsys.readouterr()
     assert not capture.err
