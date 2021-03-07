@@ -10,16 +10,18 @@ from . import kak
 from . import log
 
 
-def add_word(word: str, *, lang: str) -> None:
+def add_word(word: str, *, verbose: bool = True, lang: str) -> None:
     checker = Checker(lang=lang)
     checker.add(word)
-    print("Word added to", checker.pwl_path)
+    if verbose:
+        print("Word added to", checker.pwl_path)
 
 
-def remove_word(word: str, *, lang: str) -> None:
+def remove_word(word: str, *, verbose: bool = True, lang: str) -> None:
     checker = Checker(lang=lang)
     checker.remove(word)
-    print("Word removed from", checker.pwl_path)
+    if verbose:
+        print("Word removed from", checker.pwl_path)
 
 
 def check(
@@ -34,7 +36,7 @@ def check(
     errors = checker.check(path, filetype=filetype)
     if kakoune:
         # We need a real list because we'll iterate on it twice
-        kak.handle_spelling_errors(list(errors), timestamp=kak_timestamp)
+        kak.handle_spelling_errors(list(errors), timestamp=kak_timestamp, lang=lang)
         return True
     else:
         ok = True
@@ -56,6 +58,8 @@ def replace(word: str, *, lang: str, kak_output: bool) -> None:
 def main(argv: Optional[List[str]] = None) -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--lang", default="en_US")
+    parser.add_argument("--quiet", action="store_false", dest="verbose")
+    parser.set_defaults(verbose=True)
 
     subparsers = parser.add_subparsers(title="commands", dest="command")
 
@@ -98,13 +102,14 @@ def main(argv: Optional[List[str]] = None) -> None:
     args = parser.parse_args(args=argv)
     log(args)
     lang = args.lang
+    verbose = args.verbose
 
     if args.command == "add":
         word = args.word
-        add_word(word, lang=lang)
+        add_word(word, verbose=verbose, lang=lang)
     elif args.command == "remove":
         word = args.word
-        remove_word(word, lang=lang)
+        remove_word(word, verbose=verbose, lang=lang)
     elif args.command == "check":
         ok = check(
             args.path,

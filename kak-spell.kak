@@ -1,6 +1,7 @@
 declare-option str kak_spell_lang
 declare-option range-specs spell_errors
 declare-option -hidden str kak_spell_current_error
+declare-option str kak_spell_word_to_add
 
 define-command -params 1 kak-spell-enable %{
   evaluate-commands %sh{
@@ -37,7 +38,7 @@ define-command kak-spell-list -docstring "list spelling errors" %{
    }
 }
 
-define-command kak-spell-jump -docstring "jump to the spelling error behind the cursor" %{
+define-command kak-spell-jump -hidden %{
   execute-keys '
     <esc>
     :edit -existing *spelling* <ret>
@@ -47,6 +48,25 @@ define-command kak-spell-jump -docstring "jump to the spelling error behind the 
     :select %opt{kak_spell_current_error} <ret>
   '
 
+}
+
+define-command kak-spell-add-from-spelling-buffer -params 1 -hidden %{
+  evaluate-commands -save-regs t %{
+    execute-keys -save-regs '' "gi <a-w> l Gl"
+    set-register t %val{selection}
+    evaluate-commands %sh{
+        word="${kak_reg_t%:*}"
+        echo echo -debug "About to add $word with lang $1"
+        kak-spell --quiet --lang $1 add $word
+        # Todo: error handling
+    }
+    execute-keys '
+      <esc>
+      ga
+      :kak-spell<ret>
+      :kak-spell-list<ret>
+    '
+  }
 }
 
 define-command kak-spell-next -docstring "go to the next spelling error" %{
