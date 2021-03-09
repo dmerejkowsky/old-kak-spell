@@ -56,9 +56,7 @@ define-command kak-spell-add-from-spelling-buffer -params 1 -hidden %{
     set-register t %val{selection}
     evaluate-commands %sh{
         word="${kak_reg_t%:*}"
-        echo echo -debug "About to add $word with lang $1"
         kak-spell --quiet --lang $1 add $word
-        # Todo: error handling
     }
     execute-keys '
       <esc>
