@@ -51,7 +51,6 @@ define-command kak-spell-jump -hidden %{
     ga
     :select %opt{kak_spell_current_error} <ret>
   '
-
 }
 
 define-command kak-spell-add-from-spelling-buffer -params 1 -hidden %{
