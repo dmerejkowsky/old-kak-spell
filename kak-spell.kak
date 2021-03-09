@@ -36,6 +36,10 @@ define-command kak-spell-list -docstring "list spelling errors" %{
       --filetype "${kak_opt_filetype}" \
       "${kak_buffile}" \
    }
+   info -title "*spelling* Help" "h,j,k,l: Move
+<ret>: Jump to spelling error
+a    : Add the word to the personal dictionnary
+"
 }
 
 define-command kak-spell-jump -hidden %{
