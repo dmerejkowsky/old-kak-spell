@@ -43,31 +43,22 @@ a    : Add the word to the personal dictionnary
 }
 
 define-command kak-spell-jump -hidden %{
-  execute-keys '
-    <esc>
-    :edit -existing *spelling* <ret>
-    gi <a-E> <esc>
-    :set-option global kak_spell_current_error %val{selection} <ret>
-    ga
-    :select %opt{kak_spell_current_error} <ret>
-  '
+  edit -existing *spelling*
+  execute-keys  gi <a-E>
+  set-option global kak_spell_current_error %val{selection}
+  execute-keys ga
+  select %opt{kak_spell_current_error}
 }
 
 define-command kak-spell-add-from-spelling-buffer -params 1 -hidden %{
-  evaluate-commands -save-regs t %{
-    execute-keys -save-regs '' "gi <a-w> l Gl"
-    set-register t %val{selection}
-    evaluate-commands %sh{
-        word="${kak_reg_t%:*}"
-        kak-spell --quiet --lang $1 add $word
-    }
-    execute-keys '
-      <esc>
-      ga
-      :kak-spell<ret>
-      :kak-spell-list<ret>
-    '
+  execute-keys gi <a-w> l Gl
+  evaluate-commands %sh{
+    word="$kak_selection"
+    kak-spell --quiet --lang $1 add $word
   }
+  execute-keys ga
+  kak-spell
+  kak-spell-list
 }
 
 define-command kak-spell-next -docstring "go to the next spelling error" %{
