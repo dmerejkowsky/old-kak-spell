@@ -2,6 +2,13 @@
 
 PyEnchant wrapper for Kakoune.
 
+## Deprecation
+
+This is an old version in Python. I'm now using a more advanced (and faster!) version
+written in Rust with more features.
+
+Check out: https://git.sr.ht/~dmerej/kak-spell instead
+
 ## Installation
 
 
